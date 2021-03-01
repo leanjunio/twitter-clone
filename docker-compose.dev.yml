@@ -18,17 +18,38 @@ services:
       - DB_STRING=postgres://db:5432
     ports:
       - 4000:4000
+    depends_on:
+      - db
+    networks:
+      - pg_network
 
   # default user is "postgres"
   db:
+    container_name: pgdb
     image: postgres:latest
     restart: always
+    ports:
+      - 5432:5432
     environment:
       POSTGRES_PASSWORD: twitter-pw
       POSTGRES_DB: twitter-db
+    volumes:
+      - ~/postgres/docker-volumes:/var/lib/postgresql/data/data
+    networks:
+      - pg_network
+    env_file:
+      - ./server/prisma/.env
 
   adminer:
     image: adminer
     restart: always
     ports:
       - 8080:8080
+    depends_on:
+      - db
+    networks:
+      - pg_network
+
+networks:
+  pg_network:
+    driver: bridge
