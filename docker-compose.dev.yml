@@ -14,5 +14,21 @@ services:
     build:
       context: ./server
       dockerfile: Dockerfile.dev
+    environment:
+      - DB_STRING=postgres://db:5432
     ports:
       - 4000:4000
+
+  # default user is "postgres"
+  db:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: twitter-pw
+      POSTGRES_DB: twitter-db
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
