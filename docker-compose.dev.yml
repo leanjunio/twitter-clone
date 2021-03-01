@@ -1,0 +1,18 @@
+version: "3"
+
+services:
+  client:
+    command: npm start
+    build:
+      context: ./client
+      dockerfile: Dockerfile.dev
+    ports:
+      - 3000:3000
+
+  server:
+    command: npm run dev
+    build:
+      context: ./server
+      dockerfile: Dockerfile.dev
+    ports:
+      - 4000:4000
